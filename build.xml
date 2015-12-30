@@ -62,16 +62,10 @@
         </java>
     </target>
   	<target name="jar">
-		<jar basedir="bin" destfile="build/${project-name}.jar">
-			<manifest>
-				<attribute name="Built-By" value="${builder}" />
-				<attribute name="Built-On" value="${build-info.current-date}" />
-				<attribute name="Built-At" value="${build-info.current-time}" />
-			</manifest>
-		</jar>
-	</target>
-	<target name="build-jar">
-		<antcall target="build" />
-		<antcall target="jar" />
+        <jar destfile="Crypto.jar" basedir="bin">
+            <manifest>
+                <attribute name="Main-Class" value="splashscreen.SplashScreen"/>
+            </manifest>
+        </jar>
 	</target>
 </project>
