@@ -51,7 +51,7 @@ final class SplashScreen extends Frame {
   private void initImageAndTracker(){
     fMediaTracker = new MediaTracker(this);
     //URL imageURL = SplashScreen.class.getResource(fImageId);
-    fImage = Toolkit.getDefaultToolkit().getImage(fImageId);
+    fImage = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource(fImageId));
   }
 
 
@@ -80,7 +80,7 @@ final class SplashScreen extends Frame {
   }
 
   public static void main(String args []){
-    SplashScreen splashScreen = new SplashScreen("SplashScreen.png");
+    SplashScreen splashScreen = new SplashScreen("/images/SplashScreen.png");
     splashScreen.splash();
     try {
       Thread.sleep(4000);
