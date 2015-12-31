@@ -76,24 +76,16 @@
         </java>
     </target>
               	
-	<!-- Added to compressed to jar file --> 
-	<path id="build.classpath">
-		<fileset dir="../../ICT-Util/workspace/bin">
-		  <include name="*.jar"/>
-		</fileset>
-	</path>
-	<pathconvert property="mf.classpath" refid="build.classpath" pathsep=" ">
-		<chainedmapper>
-			<flattenmapper/>
-			<globmapper from="*" to="../lib/*"/>
-		</chainedmapper>
-	</pathconvert>
-	
+	<!-- Added to compressed to jar file -->
+	<manifestclasspath property="jar.classpath"
+	                       jarfile="Util.jar">
+	      <classpath refid="ICT-Util.classpath" />
+	</manifestclasspath>
   	<target name="jar">
         <jar destfile="bin/Crypto.jar" basedir="bin">
             <manifest>
                 <attribute name="Main-Class" value="splashscreen.SplashScreen"/>
-            	<attribute name="Class-Path" value="${mf.classpath}" />
+            	<attribute name="Class-Path" value="${jar.classpath}" />
             </manifest>
         </jar>
 	</target>
