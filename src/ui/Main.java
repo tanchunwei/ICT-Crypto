@@ -1,5 +1,9 @@
 package ui;
 
+import ict.util.CryptoUtil;
+import ict.util.GeneralUtil;
+import ict.util.LnkParser;
+
 import java.awt.AWTException;
 import java.awt.Image;
 import java.awt.MenuItem;
@@ -22,10 +26,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
-
-import util.CryptoUtil;
-import util.GeneralUtil;
-import util.LnkParser;
 
 public class Main {
 	WaitingBarForm wbf = new WaitingBarForm();

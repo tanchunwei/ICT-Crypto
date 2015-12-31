@@ -3,14 +3,18 @@
               Any modifications will be overwritten.
               To include a user specific buildfile here, simply create one in the same
               directory with the processing instruction <?eclipse.ant.import?>
-              as the first entry and export the buildfile again. -->
-<project basedir="." default="build" name="Crypto">
+              as the first entry and export the buildfile again. --><project basedir="." default="build" name="Crypto">
     <property environment="env"/>
+    <property name="ICT-Util.location" value="../../ICT-Util"/>
     <property name="debuglevel" value="source,lines,vars"/>
     <property name="target" value="1.8"/>
     <property name="source" value="1.8"/>
+    <path id="ICT-Util.classpath">
+        <pathelement location="${ICT-Util.location}/bin"/>
+    </path>
     <path id="Crypto.classpath">
         <pathelement location="bin"/>
+        <path refid="ICT-Util.classpath"/>
     </path>
     <target name="init">
         <mkdir dir="bin"/>
@@ -23,9 +27,17 @@
     <target name="clean">
         <delete dir="bin"/>
     </target>
-    <target depends="clean" name="cleanall"/>
+    <target depends="clean" name="cleanall">
+        <ant antfile="build.xml" dir="${ICT-Util.location}" inheritAll="false" target="clean"/>
+    </target>
     <target depends="build-subprojects,build-project" name="build"/>
-    <target name="build-subprojects"/>
+    <target name="build-subprojects">
+        <ant antfile="build.xml" dir="${ICT-Util.location}" inheritAll="false" target="build-project">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+    </target>
     <target depends="init" name="build-project">
         <echo message="${ant.project.name}: ${ant.file}"/>
         <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
@@ -47,6 +59,11 @@
         <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
         <antcall target="build"/>
     </target>
+    <target name="Main (1)">
+        <java classname="ui.Main" failonerror="true" fork="yes">
+            <classpath refid="Crypto.classpath"/>
+        </java>
+    </target>
     <target name="Main">
         <java classname="splashscreen.SplashScreen" failonerror="true" fork="yes">
             <classpath refid="Crypto.classpath"/>
@@ -54,11 +71,6 @@
     </target>
     <target name="SplashScreen">
         <java classname="splashscreen.SplashScreen" failonerror="true" fork="yes">
-            <classpath refid="Crypto.classpath"/>
-        </java>
-    </target>
-    <target name="Main (1)">
-        <java classname="ui.Main" failonerror="true" fork="yes">
             <classpath refid="Crypto.classpath"/>
         </java>
     </target>
