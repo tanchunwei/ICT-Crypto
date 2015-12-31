@@ -17,6 +17,11 @@
         <pathelement location="bin"/>
         <path refid="ICT-Util.classpath"/>
     </path>
+	<manifestclasspath property="jar.classpath"
+	                       jarfile="Util.jar">
+	      <classpath refid="ICT-Util.classpath" />
+	</manifestclasspath>
+	
     <target name="init">
         <mkdir dir="bin"/>
         <copy includeemptydirs="false" todir="bin">
@@ -76,12 +81,7 @@
         </java>
     </target>
               	
-	<!-- Added to compressed to jar file --> 
-    <manifestclasspath property="jar.classpath"
-                       jarfile="Util.jar">
-      <classpath refid="ICT-Util.classpath" />
-    </manifestclasspath>
-	
+	<!-- Added to compressed to jar file --> 	
   	<target name="jar">
         <jar destfile="bin/Crypto.jar" basedir="bin">
             <manifest>
