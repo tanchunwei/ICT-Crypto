@@ -3,8 +3,7 @@
               Any modifications will be overwritten.
               To include a user specific buildfile here, simply create one in the same
               directory with the processing instruction <?eclipse.ant.import?>
-              as the first entry and export the buildfile again. -->
-<project basedir="." default="build" name="Crypto">
+              as the first entry and export the buildfile again. --><project basedir="." default="build" name="Crypto">
     <property environment="env"/>
     <property name="ICT-Util.location" value="../../ICT-Util/workspace"/>
     <property name="debuglevel" value="source,lines,vars"/>
@@ -16,7 +15,7 @@
     <path id="Crypto.classpath">
         <pathelement location="bin"/>
         <path refid="ICT-Util.classpath"/>
-    </path>	
+    </path>
     <target name="init">
         <mkdir dir="bin"/>
         <copy includeemptydirs="false" todir="bin">
@@ -31,13 +30,15 @@
     <target depends="clean" name="cleanall">
         <ant antfile="build.xml" dir="${ICT-Util.location}" inheritAll="false" target="clean"/>
     </target>
-    <target depends="build-subprojects,build-project,jar" name="build"/>
+    <target depends="build-subprojects,build-project" name="build"/>
     <target name="build-subprojects">
+		<ant antfile="build.xml" dir="${ICT-Util.location}" inheritAll="false" target="cleanall"/>
         <ant antfile="build.xml" dir="${ICT-Util.location}" inheritAll="false" target="build-project">
             <propertyset>
                 <propertyref name="build.compiler"/>
             </propertyset>
         </ant>
+				<ant antfile="build.xml" dir="${ICT-Util.location}" inheritAll="false" target="jar"/>
     </target>
     <target depends="init" name="build-project">
         <echo message="${ant.project.name}: ${ant.file}"/>
@@ -76,10 +77,10 @@
         </java>
     </target>
               	
-	<!-- Added to compressed to jar file -->
+	<!-- Added to compressed to jar file --> 
   	<target name="jar">
         <jar destfile="bin/Crypto.jar" basedir="bin">
-        	<zipgroupfileset dir="${ICT-Util.location}" includes="Util.jar" />
+			<zipgroupfileset dir="../../ICT-Util/workspace/bin" includes="Util.jar" />
             <manifest>
                 <attribute name="Main-Class" value="splashscreen.SplashScreen"/>
             </manifest>
