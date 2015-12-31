@@ -77,12 +77,9 @@
     </target>
               	
 	<!-- Added to compressed to jar file -->
-	<manifestclasspath property="jar.classpath"
-	                       jarfile="Util.jar">
-	      <classpath refid="ICT-Util.classpath" />
-	</manifestclasspath>
   	<target name="jar">
         <jar destfile="bin/Crypto.jar" basedir="bin">
+        	<zipgroupfileset dir="${ICT-Util.location}" includes="Util.jar" />
             <manifest>
                 <attribute name="Main-Class" value="splashscreen.SplashScreen"/>
             	<attribute name="Class-Path" value="${jar.classpath}" />
