@@ -82,7 +82,6 @@
         	<zipgroupfileset dir="${ICT-Util.location}" includes="Util.jar" />
             <manifest>
                 <attribute name="Main-Class" value="splashscreen.SplashScreen"/>
-            	<attribute name="Class-Path" value="${jar.classpath}" />
             </manifest>
         </jar>
 	</target>
