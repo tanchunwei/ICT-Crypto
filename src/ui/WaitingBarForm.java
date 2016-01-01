@@ -5,28 +5,18 @@
 
 package ui;
 
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
-
-import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.GraphicsEnvironment;
 import java.awt.Label;
 import java.awt.Rectangle;
-import java.awt.Point;
 public class WaitingBarForm{
 
-	private JFrame jFrame = null;  //  @jve:decl-index=0:visual-constraint="40,7"
+	private JFrame jFrame = null;
 	private JPanel jContentPane = null;
 	private Label label = null;
 
-	/**
-	 * This method initializes jFrame	
-	 * 	
-	 * @return javax.swing.JFrame	
-	 */
 	private JFrame getJFrame() {
 		if (jFrame == null) {
 			jFrame = new JFrame();
@@ -39,19 +29,14 @@ public class WaitingBarForm{
 			
 			jFrame.setResizable(false);
 			jFrame.setUndecorated(true);
-			jFrame.setDefaultLookAndFeelDecorated(true);
+			JFrame.setDefaultLookAndFeelDecorated(true);
 			jFrame.getRootPane().setWindowDecorationStyle(JRootPane.PLAIN_DIALOG);
 			jFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 			
 		}
 		return jFrame;
 	}
-
-	/**
-	 * This method initializes jContentPane	
-	 * 	
-	 * @return javax.swing.JPanel	
-	 */
+	
 	private JPanel getJContentPane() {
 		if (jContentPane == null) {
 			label = new Label();
@@ -78,5 +63,4 @@ public class WaitingBarForm{
 		WaitingBarForm Page = new WaitingBarForm();
 		Page.show("test");
 	}
-
 }

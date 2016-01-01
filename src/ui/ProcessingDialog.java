@@ -14,10 +14,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
  
 public class ProcessingDialog extends JDialog implements Runnable {
-    
-    private Thread t;
-    private Runnable r;
-    private JLabel l;
+	private static final long serialVersionUID = 770335922832507900L;
+	
+	private Thread thread;
+    private Runnable runnable;
+    private JLabel label;
     private boolean done;
     
     public void setDone(boolean b){
@@ -27,17 +28,17 @@ public class ProcessingDialog extends JDialog implements Runnable {
     public ProcessingDialog( Frame owner, String title, boolean modal, Runnable r ) {
         super( owner, title, modal );
         setDefaultCloseOperation( DO_NOTHING_ON_CLOSE );
-        this.r = r;
-        l = new JLabel( "Starting.... /" );
+        this.runnable = r;
+        label = new JLabel( "Starting.... /" );
         JPanel p = new JPanel();
-        p.add( l );
+        p.add( label );
         getContentPane().add( p );
         
         setSize( 100, 100 );
         setLocationRelativeTo(null);
-        t = new Thread( this );
+        thread = new Thread( this );
         done = false;
-        t.start();
+        thread.start();
         
         setVisible( true );
     }
@@ -45,7 +46,7 @@ public class ProcessingDialog extends JDialog implements Runnable {
     public void run() {
         Thread processing = new Thread( new Runnable() {
             public void run() {
-                Thread t = new Thread( r );
+                Thread t = new Thread( runnable );
                 t.start();                
                 /*try {
                     t.join();
@@ -58,7 +59,7 @@ public class ProcessingDialog extends JDialog implements Runnable {
         } );
         processing.start();
         while ( !done ) {
-            String text = l.getText();
+            String text = label.getText();
             char c = text.charAt( text.length() - 1 );
             char newC = 0;
             switch ( c ) {
@@ -76,7 +77,7 @@ public class ProcessingDialog extends JDialog implements Runnable {
                     break;
             }
             text = text.replace( c, newC );
-            l.setText( text );
+            label.setText( text );
 /*            try {
                 Thread.sleep( 100 );
             }
@@ -85,7 +86,7 @@ public class ProcessingDialog extends JDialog implements Runnable {
             }*/
         }
         
-        l.setText( "Startup... done!" );
+        label.setText( "Startup... done!" );
         /*try {
             Thread.sleep( 2000 );
         }

@@ -2,11 +2,9 @@ package ui;
 
 import ict.util.CryptoUtil;
 import ict.util.GeneralUtil;
-import ict.util.LnkParser;
 
 import java.awt.AWTException;
 import java.awt.Image;
-import java.awt.MenuItem;
 import java.awt.SystemTray;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
@@ -15,7 +13,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.util.ArrayList;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -36,32 +33,9 @@ public class Main {
 
 	TrayIcon trayIcon;
 	public char currentDrive;
-	public String filename;
-	public boolean isIcon;
-	public Icon icon;
-	public LnkParser lnkFile;
-	String[] files;
-
-	ActionListener exitListener = new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-			System.out.println("Exiting...");
-			System.exit(0);
-		}
-	};
-
-	ActionListener viewListener = new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-		}
-	};
-
+	
 	JScrollPane scroll = new JScrollPane();
-	ArrayList<JMenuItem> games = new ArrayList<JMenuItem>();
-	ArrayList<ActionListener> gamesAl = new ArrayList<ActionListener>();
-	ArrayList<JMenuItem> applications = new ArrayList<JMenuItem>();
-	ArrayList<ActionListener> applicationsAl = new ArrayList<ActionListener>();
 	JPopupMenu popup = new JPopupMenu();
-	MenuItem openTrayItem = new MenuItem("View Info");
-	MenuItem manageItem = new MenuItem("Manage Info");
 	JMenuItem exitItem;
 	JMenuItem decryptItem;
 	JMenuItem encryptItem;
@@ -103,7 +77,13 @@ public class Main {
 
 	public void initDecryptItem() {
 		decryptItem = new JMenuItem("Decrypt", decryptIco);
-		decryptItem.addActionListener(new ActionListener() {
+		decryptItem.addActionListener(initDecryptListener());
+
+		popup.add(decryptItem);
+	}
+	
+	private ActionListener initDecryptListener(){
+		return new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser chooser = new JFileChooser();
 				String name = "";
@@ -127,7 +107,7 @@ public class Main {
 				if (JOptionPane.showOptionDialog(null, obj, "Need password",
 						JOptionPane.YES_NO_OPTION,
 						JOptionPane.QUESTION_MESSAGE, null, stringArray, obj) == JOptionPane.YES_OPTION)
-					password = passwordField.getText();
+					password = new String(passwordField.getPassword());
 
 				if ("".equals(name1) || name1 == null) {
 					errorMsg = "Select a file";
@@ -187,14 +167,18 @@ public class Main {
 							JOptionPane.ERROR_MESSAGE);
 				}
 			}
-		});
-
-		popup.add(decryptItem);
+		};
 	}
 
 	public void initEncryptItem() {
 		encryptItem = new JMenuItem("Encrypt", encryptIco);
-		encryptItem.addActionListener(new ActionListener() {
+		encryptItem.addActionListener(initEncryptListener());
+
+		popup.add(encryptItem);
+	}
+	
+	private ActionListener initEncryptListener(){
+		return new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser chooser = new JFileChooser();
 				String name = "";
@@ -218,7 +202,7 @@ public class Main {
 				if (JOptionPane.showOptionDialog(null, obj, "Need password",
 						JOptionPane.YES_NO_OPTION,
 						JOptionPane.QUESTION_MESSAGE, null, stringArray, obj) == JOptionPane.YES_OPTION)
-					password = passwordField.getText();
+					password = new String(passwordField.getPassword());
 
 				if ("".equals(name1) || name1 == null) {
 					errorMsg = "Select a file";
@@ -277,14 +261,12 @@ public class Main {
 							JOptionPane.ERROR_MESSAGE);
 				}
 			}
-		});
-
-		popup.add(encryptItem);
+		};
 	}
 	
 	public void initExitItem(){
 		exitItem =  new JMenuItem("Exit", closeIco);
-		exitItem.addActionListener(exitListener);
+		exitItem.addActionListener(initExitListener());
 		popup.add(exitItem);
 		trayIcon = new TrayIcon(image, "Crypto", null);
 		trayIcon.addMouseListener(new MouseAdapter() {
@@ -296,6 +278,15 @@ public class Main {
 				}
 			}
 		});
+	}
+	
+	private ActionListener initExitListener(){
+		return new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Exiting...");
+				System.exit(0);
+			}
+		};
 	}
 	
 	public void showTrayIcon(){
