@@ -85,85 +85,49 @@ public class Main {
 	private ActionListener initDecryptListener(){
 		return new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JFileChooser chooser = new JFileChooser();
-				String name = "";
-				String password = "";
-				int r = chooser.showOpenDialog(new JFrame());
-				if (r == JFileChooser.APPROVE_OPTION) {
-					name = chooser.getSelectedFile().getAbsolutePath();
-				}
-				// ****************
-				chooser = new JFileChooser();
-
-				String name1 = GeneralUtil.replaceUrlFileName(
-						GeneralUtil.convertUrlToJavaUrl(name),
+				String inputFilepath = promptFileChooser();
+				String outputFilepath = GeneralUtil.replaceUrlFileName(
+						GeneralUtil.convertUrlToJavaUrl(inputFilepath),
 						"(Decryption powered by Ice Turtle)");
-				String errorMsg = "";
-
-				JPasswordField passwordField = new JPasswordField();
-				passwordField.setEchoChar('*');
-				Object[] obj = { "password\n\n", passwordField };
-				Object stringArray[] = { "OK", "Cancel" };
-				if (JOptionPane.showOptionDialog(null, obj, "Need password",
-						JOptionPane.YES_NO_OPTION,
-						JOptionPane.QUESTION_MESSAGE, null, stringArray, obj) == JOptionPane.YES_OPTION)
-					password = new String(passwordField.getPassword());
-
-				if ("".equals(name1) || name1 == null) {
-					errorMsg = "Select a file";
-				}
-				if ("".equals(password) || password == null) {
-					errorMsg = "Please enter a password";
-				}
+				String password = promptPassword();
+				String errorMsg = validateInputs(outputFilepath,
+						password);
 
 				if ("".equals(errorMsg)) {
-					try {
-						/*
-						 * long fileSize =
-						 * GeneralUtil.getFileSize(GeneralUtil.convertUrlToJavaUrl
-						 * (name)); System.out.print(fileSize);
-						 */
-
-						/*
-						 * UIManager.put("ProgressMonitor.progressText",
-						 * "This is progress?");
-						 * UIManager.put("OptionPane.cancelButtonText",
-						 * "Cancel"); new ProgressMonitorExample(fileSize);
-						 */
-
-						wbf.show("Decrypting file...");
-						Runnable r1 = new Runnable() {
-							public void run() {
-								try {
-									Thread.sleep(10);
-								} catch (InterruptedException x) {
-									x.printStackTrace();
-								}
-							}
-						};
-						new ProcessingDialog(new JFrame(), "Starting", true, r1);
-
-						CryptoUtil.decryptFilePassword(
-								GeneralUtil.convertUrlToJavaUrl(name),
-								GeneralUtil.convertUrlToJavaUrl(name1),
-								password);
-
-						wbf.dispose();
-						JOptionPane.showMessageDialog(null, "File decrypted",
-								"Alert", JOptionPane.INFORMATION_MESSAGE);
-						name = "";
-						name1 = "";
-						password = "";
-
-					} catch (Exception e1) {
-						e1.printStackTrace();
-						wbf.dispose();
-						JOptionPane.showMessageDialog(null,
-								"Fail to decrypt\nInvaild password", "Alert",
-								JOptionPane.ERROR_MESSAGE);
-					}
+					processDecrypt(inputFilepath, outputFilepath, password);
 				} else {
 					JOptionPane.showMessageDialog(null, errorMsg, "Alert",
+							JOptionPane.ERROR_MESSAGE);
+				}
+			}
+
+			private void processDecrypt(String inputFilepath,
+					String outputFilepath, String password) {
+				try {
+					wbf.show("Decrypting file...");
+					Runnable r1 = new Runnable() {
+						public void run() {
+							try {
+								Thread.sleep(10);
+							} catch (InterruptedException x) {
+								x.printStackTrace();
+							}
+						}
+					};
+					new ProcessingDialog(new JFrame(), "Starting", true, r1);
+					CryptoUtil.decryptFilePassword(
+							GeneralUtil.convertUrlToJavaUrl(inputFilepath),
+							GeneralUtil.convertUrlToJavaUrl(outputFilepath),
+							password);
+
+					wbf.dispose();
+					JOptionPane.showMessageDialog(null, "File decrypted",
+							"Alert", JOptionPane.INFORMATION_MESSAGE);
+				} catch (Exception e1) {
+					e1.printStackTrace();
+					wbf.dispose();
+					JOptionPane.showMessageDialog(null,
+							"Fail to decrypt\nInvaild password", "Alert",
 							JOptionPane.ERROR_MESSAGE);
 				}
 			}
@@ -180,89 +144,91 @@ public class Main {
 	private ActionListener initEncryptListener(){
 		return new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JFileChooser chooser = new JFileChooser();
-				String name = "";
-				String password = "";
-				int r = chooser.showOpenDialog(new JFrame());
-				if (r == JFileChooser.APPROVE_OPTION) {
-					name = chooser.getSelectedFile().getAbsolutePath();
-				}
-				// ****************
-				chooser = new JFileChooser();
-
-				String name1 = GeneralUtil.replaceUrlFileName(
-						GeneralUtil.convertUrlToJavaUrl(name),
+				String inputFilepath = promptFileChooser();
+				String outputFilepath = GeneralUtil.replaceUrlFileName(
+						GeneralUtil.convertUrlToJavaUrl(inputFilepath),
 						"(Encryption powered by Ice Turtle)");
-				String errorMsg = "";
-
-				JPasswordField passwordField = new JPasswordField();
-				passwordField.setEchoChar('*');
-				Object[] obj = { "password\n\n", passwordField };
-				Object stringArray[] = { "OK", "Cancel" };
-				if (JOptionPane.showOptionDialog(null, obj, "Need password",
-						JOptionPane.YES_NO_OPTION,
-						JOptionPane.QUESTION_MESSAGE, null, stringArray, obj) == JOptionPane.YES_OPTION)
-					password = new String(passwordField.getPassword());
-
-				if ("".equals(name1) || name1 == null) {
-					errorMsg = "Select a file";
-				}
-				if ("".equals(password) || password == null) {
-					errorMsg = "Please enter a password";
-				}
-
+				String password = promptPassword();
+				String errorMsg = validateInputs(outputFilepath,
+						password);
+				
 				if ("".equals(errorMsg)) {
-					try {
-						/*
-						 * long fileSize =
-						 * GeneralUtil.getFileSize(GeneralUtil.convertUrlToJavaUrl
-						 * (name)); System.out.print(fileSize);
-						 */
-
-						/*
-						 * UIManager.put("ProgressMonitor.progressText",
-						 * "This is progress?");
-						 * UIManager.put("OptionPane.cancelButtonText",
-						 * "Cancel"); new ProgressMonitorExample(fileSize);
-						 */
-
-						wbf.show("Encrypting file...");
-						Runnable r1 = new Runnable() {
-							public void run() {
-								try {
-									Thread.sleep(10);
-								} catch (InterruptedException x) {
-									x.printStackTrace();
-								}
-							}
-						};
-						new ProcessingDialog(new JFrame(), "Starting", true, r1);
-
-						CryptoUtil.encryptFilePassword(
-								GeneralUtil.convertUrlToJavaUrl(name),
-								GeneralUtil.convertUrlToJavaUrl(name1),
-								password);
-
-						wbf.dispose();
-						JOptionPane.showMessageDialog(null, "File encrypted",
-								"Alert", JOptionPane.INFORMATION_MESSAGE);
-						name = "";
-						name1 = "";
-						password = "";
-
-					} catch (Exception e1) {
-						e1.printStackTrace();
-						wbf.dispose();
-						JOptionPane.showMessageDialog(null, "Fail to encrypt",
-								"Alert", JOptionPane.ERROR_MESSAGE);
-					}
+					processEncrypt(inputFilepath, outputFilepath, password);
 				} else {
 					JOptionPane.showMessageDialog(null, errorMsg, "Alert",
 							JOptionPane.ERROR_MESSAGE);
 				}
 			}
+
+			private void processEncrypt(String inputFilepath,
+					String outputFilepath, String password) {
+				try {
+					wbf.show("Encrypting file...");
+					Runnable r1 = new Runnable() {
+						public void run() {
+							try {
+								Thread.sleep(10);
+							} catch (InterruptedException x) {
+								x.printStackTrace();
+							}
+						}
+					};
+					new ProcessingDialog(new JFrame(), "Starting", true, r1);
+
+					CryptoUtil.encryptFilePassword(
+							GeneralUtil.convertUrlToJavaUrl(inputFilepath),
+							GeneralUtil.convertUrlToJavaUrl(outputFilepath),
+							password);
+
+					wbf.dispose();
+					JOptionPane.showMessageDialog(null, "File encrypted",
+							"Alert", JOptionPane.INFORMATION_MESSAGE);
+
+				} catch (Exception e1) {
+					e1.printStackTrace();
+					wbf.dispose();
+					JOptionPane.showMessageDialog(null, "Fail to encrypt",
+							"Alert", JOptionPane.ERROR_MESSAGE);
+				}
+			}
 		};
 	}
+	
+	private String promptFileChooser() {
+		String filePath = "";
+		JFileChooser chooser = new JFileChooser();
+		int r = chooser.showOpenDialog(new JFrame());
+		if (r == JFileChooser.APPROVE_OPTION) {
+			filePath = chooser.getSelectedFile().getAbsolutePath();
+		}
+		return filePath;
+	}
+	
+	private String promptPassword() {
+		String password = "";
+		JPasswordField passwordField = new JPasswordField();
+		passwordField.setEchoChar('*');
+		Object[] obj = { "password\n\n", passwordField };
+		Object stringArray[] = { "OK", "Cancel" };
+		if (JOptionPane.showOptionDialog(null, obj, "Need password",
+				JOptionPane.YES_NO_OPTION,
+				JOptionPane.QUESTION_MESSAGE, null, stringArray, obj) == JOptionPane.YES_OPTION)
+			password = new String(passwordField.getPassword());
+		return password;
+	}
+	
+	private String validateInputs(String filepathWithSignature,
+			String password) {
+		String errorMsg = "";
+		if ("".equals(filepathWithSignature) || filepathWithSignature == null) {
+			errorMsg = "Select a file";
+		}
+		if ("".equals(password) || password == null) {
+			errorMsg = "Please enter a password";
+		}
+		return errorMsg;
+	}
+	
 	
 	public void initExitItem(){
 		exitItem =  new JMenuItem("Exit", closeIco);
